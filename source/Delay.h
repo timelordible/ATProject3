@@ -48,5 +48,11 @@ private:
     double sampleRate;
     float mix = 0.5;
     float feedback = 0.2;
-        
+
+    void nextLfoVal();
+
+    float phase = 0;
+    float freq = 0.5;
+    float amp = 0.1;
+    float lfo = 0;
 };
