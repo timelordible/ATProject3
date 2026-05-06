@@ -86,7 +86,15 @@ float Delay::processSample(float inputSample, int channel)
     float* delayData = delayBuffer.getWritePointer(channel);
 
     int writeHead = writeHeads[channel];
+    if (channel == 0)
+    {
+      nextLfoVal();
+      currDelay = smoothDelay.getNextValue();
+    }
 
+    float modDelay = currDelay + lfo;
+
+    modDelay = std::clamp<float>(modDelay, 0.001f, (delayBufferSize / sampleRate));
     delaySamples = delaySeconds * sampleRate;
     
     float delaySample = interpRead(delayData, writeHead, delaySamples);
