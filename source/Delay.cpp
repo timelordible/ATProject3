@@ -56,6 +56,16 @@ void Delay::setFeedbackAmt(float feedbackAmt)
     feedback = feedbackAmt;
 }
 
+void Delay::nextLfoVal()
+{
+    lfo = amp * sinf(phase);
+    phase += juce::MathConstants<float>::twoPi * freq / sampleRate;
+
+    if (phase >= juce::MathConstants<float>::twoPi) {
+        phase -= juce::MathConstants<float>::twoPi;
+    }
+}
+
 float Delay::interpRead(float* delayData, int writeHead, float delaySamples)
 {
     float readTail = writeHead - delaySamples;
