@@ -44,6 +44,9 @@ private:
     float delaySeconds = 0;
     int maxDelayInSamples = 0;
     int delayBufferSize = 0;
+    
+    juce::SmoothedValue<float> smoothDelay;
+    float currDelay;
 
     double sampleRate;
     float mix = 0.5;

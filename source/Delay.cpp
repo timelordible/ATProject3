@@ -89,7 +89,7 @@ float Delay::processSample(float inputSample, int channel)
     if (channel == 0)
     {
       nextLfoVal();
-      currDelay = smoothedDelay.getNextValue();
+      currDelay = smoothDelay.getNextValue();
     }
 
     float modDelay = currDelay + lfo;

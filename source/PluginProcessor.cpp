@@ -31,9 +31,12 @@ apvts(*this, nullptr, "Parameters", createParams())
 juce::AudioProcessorValueTreeState::ParameterLayout _2526HW4KeyAudioProcessor::createParams()
 {
     return {
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"delay", 1}, "Delay length in ms", 0.1, 10, 0.01), // flanger parameter ranges
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"mix", 1}, "Wet/Dry Mix", 0.0, 1, 0.01),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"feedback", 1}, "Feedback Amount", -0.95, 0.95, 0.01)
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"delay", 1}, "Delay length", 0.0, 2, 0.25),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"mix", 1}, "Mix", 0.0f, 1.0f, 0.5f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"feedback", 1}, "Feedback", 0.0f, 0.95f, 0.3f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"rate", 1}, "Rate", 0.05f, 5.0f, 0.5f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"depth", 1}, "Depth", 0.0f, 0.5f, 0.1f), // seconds
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"modOn", 1}, "Modulation On", true)
     };
 }
 
@@ -210,7 +213,7 @@ void _2526HW4KeyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 //==============================================================================
 bool _2526HW4KeyAudioProcessor::hasEditor() const
 {
-    return false; // (change this to false if you choose to not supply an editor)
+    return true; // (change this to false if you choose to not supply an editor)
 }
 
 juce::AudioProcessorEditor* _2526HW4KeyAudioProcessor::createEditor()
