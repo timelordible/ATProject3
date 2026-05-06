@@ -31,9 +31,9 @@ apvts(*this, nullptr, "Parameters", createParams())
 juce::AudioProcessorValueTreeState::ParameterLayout _2526HW4KeyAudioProcessor::createParams()
 {
     return {
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"delay", 1}, "Delay length", 0.0, 3, 0.25),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"mix", 1}, "Wet/Dry Mix", 0.0, 1, 0.5),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"feedback", 1}, "Feedback Amount", 0.0, 0.95, 0)
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"delay", 1}, "Delay length in ms", 0.1, 10, 0.01), // flanger parameter ranges
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"mix", 1}, "Wet/Dry Mix", 0.0, 1, 0.01),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"feedback", 1}, "Feedback Amount", -0.95, 0.95, 0.01)
     };
 }
 
@@ -172,7 +172,8 @@ void _2526HW4KeyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     // get params
 
     auto* delayParam = apvts.getRawParameterValue("delay");
-    auto delayLengthSec = delayParam->load();
+    auto delayLengthMSec = delayParam->load();
+    auto delayLengthSec = delayLengthMSec;
     smoothedDelay.setTargetValue(delayLengthSec);
     
     auto* mixParam = apvts.getRawParameterValue("mix");
