@@ -74,8 +74,12 @@ private:
     juce::SmoothedValue<float> smoothedDelay;
     juce::SmoothedValue<float> smoothedMix;
     juce::SmoothedValue<float> smoothedFeedback;
+    juce::SmoothedValue<float> smoothedRate;
+    juce::SmoothedValue<float> smoothedDepth;
     
     float currDelay;
     float currMix;
     float currFeedback;
+    float currRate;
+    float currDepth;
 };

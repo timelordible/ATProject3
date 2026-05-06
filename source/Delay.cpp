@@ -56,10 +56,25 @@ void Delay::setFeedbackAmt(float feedbackAmt)
     feedback = feedbackAmt;
 }
 
+void Delay::setModRate(float rateHz)
+{
+    rate = rateHz;
+}
+
+void Delay::setModRate(float depthSecond)
+{
+    depth = depthSecond;
+}
+
+void Delay::setModValue(bool onValue)
+{
+    modOn = onValue;
+}
+
 void Delay::nextLfoVal()
 {
-    lfo = amp * sinf(phase);
-    phase += juce::MathConstants<float>::twoPi * freq / sampleRate;
+    lfo = depth * sinf(phase);
+    phase += juce::MathConstants<float>::twoPi * rate / sampleRate;
 
     if (phase >= juce::MathConstants<float>::twoPi) {
         phase -= juce::MathConstants<float>::twoPi;
@@ -88,14 +103,16 @@ float Delay::processSample(float inputSample, int channel)
     int writeHead = writeHeads[channel];
     if (channel == 0)
     {
-      nextLfoVal();
-      currDelay = smoothDelay.getNextValue();
+        if (modOn)
+            nextLfoVal();
+        else
+            lfo = 0.0f
     }
 
-    float modDelay = currDelay + lfo;
+    float modDelay = delaySeconds + lfo;
 
     modDelay = std::clamp<float>(modDelay, 0.001f, (delayBufferSize / sampleRate));
-    delaySamples = delaySeconds * sampleRate;
+    delaySamples = modDelay * sampleRate;
     
     float delaySample = interpRead(delayData, writeHead, delaySamples);
 

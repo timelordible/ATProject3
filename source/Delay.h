@@ -31,6 +31,13 @@ public:
     
     void setFeedbackAmt(float feedbackAmt);
 
+    void setModRate(float rateHz);
+
+    void setModDepth(float depthSecond);
+
+    void setModTrue(bool onValue);
+
+    void setModValue(bool onValue);
 
 private:
 
@@ -54,8 +61,11 @@ private:
 
     void nextLfoVal();
 
+    bool modOn = false;
     float phase = 0;
     float freq = 0.5;
     float amp = 0.1;
     float lfo = 0;
+    float rate = 0;
+    float depth = 0;
 };
