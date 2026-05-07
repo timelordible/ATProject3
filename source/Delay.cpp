@@ -61,7 +61,7 @@ void Delay::setModRate(float rateHz)
     rate = rateHz;
 }
 
-void Delay::setModRate(float depthSecond)
+void Delay::setModDepth(float depthSecond)
 {
     depth = depthSecond;
 }
@@ -106,7 +106,7 @@ float Delay::processSample(float inputSample, int channel)
         if (modOn)
             nextLfoVal();
         else
-            lfo = 0.0f
+            lfo = 0.0f;
     }
 
     float modDelay = delaySeconds + lfo;
