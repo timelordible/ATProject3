@@ -73,12 +73,39 @@ void Delay::setModValue(bool onValue)
 
 void Delay::nextLfoVal()
 {
-    lfo = depth * sinf(phase);
-    phase += juce::MathConstants<float>::twoPi * rate / sampleRate;
+    lfo = depth * getLfoValue();
 
-    if (phase >= juce::MathConstants<float>::twoPi) {
-        phase -= juce::MathConstants<float>::twoPi;
+    float twoPi = 2.0f * juce::MathConstants<float>::pi;
+
+    phase += twoPi * rate / sampleRate;
+
+    if (phase >= twoPi)
+    {
+        phase -= twoPi;
     }
+}
+
+float Delay::getLfoValue()
+{
+    switch (lfoShape)
+    {
+        case 0: // sine
+            return sinf(phase);
+
+        case 1: // triangle
+            return (2.0f / juce::MathConstants<float>::pi) * asinf(sinf(phase));
+
+        case 2: // square
+            return sinf(phase) >= 0.0f ? 1.0f : -1.0f;
+
+        default:
+            return sinf(phase);
+    }
+}
+
+void Delay::setLfoShape(int shape)
+{
+    lfoShape = shape;
 }
 
 float Delay::interpRead(float* delayData, int writeHead, float delaySamples)
