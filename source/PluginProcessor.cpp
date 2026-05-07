@@ -38,11 +38,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout _2526HW4KeyAudioProcessor::c
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"depth", 1}, "Depth", 0.0f, 0.5f, 0.1f), // seconds
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"modOn", 1}, "Modulation On", true)
     };
-  params.push_back(std::make_unique<juce::AudioParameterChoice>(
-    "lfoShape",
-    "LFO Shape",
-    juce::StringArray { "Sine", "Triangle", "Square" },
-    0));
+  // params.push_back(std::make_unique<juce::AudioParameterChoice>(
+    // "lfoShape",
+    // "LFO Shape",
+    // juce::StringArray { "Sine", "Triangle", "Square" },
+    // 0));
 }
 
 _2526HW4KeyAudioProcessor::~_2526HW4KeyAudioProcessor()
@@ -194,18 +194,18 @@ void _2526HW4KeyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     
     auto rateParam = apvts.getRawParameterValue("rate");
     auto rate = rateParam->load();
-    delay.setModRate(rate);
+    smoothedRate.setTargetValue(rate);
     
     auto depthParam = apvts.getRawParameterValue("depth");
     auto depthMs = depthParam->load();
-    delay.setModDepth(depthMs / 1000.0f);
+    smoothedDepth.setTargetValue(depthMs / 1000.0f);
     
     auto modParam = apvts.getRawParameterValue("modOn");
     auto modOn = modParam->load() > 0.5f;
     delay.setModValue(modOn);
 
-    auto* lfoShapeParam = apvts.getRawParameterValue("lfoShape");
-    delay.setLfoShape((int) lfoShapeParam->load());
+    // auto* lfoShapeParam = apvts.getRawParameterValue("lfoShape");
+    // delay.setLfoShape((int) lfoShapeParam->load());
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -223,6 +223,11 @@ void _2526HW4KeyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
                 delay.setWetMix(currMix);
                 currFeedback = smoothedFeedback.getNextValue();
                 delay.setFeedbackAmt(currFeedback);
+                currRate = smoothedRate.getNextValue();
+                delay.setModRate(currRate);
+                currDepth = smoothedDepth.getNextValue();
+                delay.setModDepth(currDepth);
+                
             }
             
             channelData[i] = delay.processSample(channelData[i], channel);

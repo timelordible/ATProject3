@@ -63,7 +63,7 @@ private:
 
     void nextLfoVal();
 
-    bool modOn = false;
+    bool modOn = true;
     float phase = 0;
     float freq = 0.5;
     float amp = 0.1;
