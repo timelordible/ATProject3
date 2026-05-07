@@ -38,6 +38,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout _2526HW4KeyAudioProcessor::c
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"depth", 1}, "Depth", 0.0f, 0.5f, 0.1f), // seconds
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"modOn", 1}, "Modulation On", true)
     };
+  params.push_back(std::make_unique<juce::AudioParameterChoice>(
+    "lfoShape",
+    "LFO Shape",
+    juce::StringArray { "Sine", "Triangle", "Square" },
+    0));
 }
 
 _2526HW4KeyAudioProcessor::~_2526HW4KeyAudioProcessor()
@@ -198,6 +203,9 @@ void _2526HW4KeyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     auto modParam = apvts.getRawParameterValue("modOn");
     auto modOn = modParam->load() > 0.5f;
     delay.setModValue(modOn);
+
+    auto* lfoShapeParam = apvts.getRawParameterValue("lfoShape");
+    delay.setLfoShape((int) lfoShapeParam->load());
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
