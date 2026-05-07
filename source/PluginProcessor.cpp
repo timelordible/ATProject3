@@ -186,6 +186,18 @@ void _2526HW4KeyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     auto* feedbackParam = apvts.getRawParameterValue("feedback");
     auto feedback = feedbackParam->load();
     smoothedFeedback.setTargetValue(feedback);
+    
+    auto rateParam = apvts.getRawParameterValue("rate");
+    auto rate = rateParam->load();
+    delay.setModRate(rate);
+    
+    auto depthParam = apvts.getRawParameterValue("depth");
+    auto depthMs = depthParam->load();
+    delay.setModDepth(depthMs / 1000.0f);
+    
+    auto modParam = apvts.getRawParameterValue("modOn");
+    auto modOn = modParam->load() > 0.5f;
+    delay.setModValue(modOn);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
