@@ -39,6 +39,8 @@ public:
 
     void setModValue(bool onValue);
 
+    void setLfoShape(int shape);
+
 private:
 
     juce::AudioBuffer<float> delayBuffer;
@@ -68,4 +70,8 @@ private:
     float lfo = 0;
     float rate = 0;
     float depth = 0;
+
+    int lfoShape = 0; // 0 = sine, 1 = triangle, 2 = square
+
+    float getLfoValue();
 };
