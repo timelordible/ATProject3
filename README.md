@@ -7,3 +7,4 @@ To create a flanger that works off open in any DAW using only C++ code. It works
 AI was used to assist in 
 - Explaining new GUI functions and customizable components like TextButton, ColourGradient, and setFont()
 - helping identify syntax and logic errors in DSP and GUI code
+- finding initial parameter ranges for flanger effects 
